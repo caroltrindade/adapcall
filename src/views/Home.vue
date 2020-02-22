@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div style="width: 100%" class="home">
     <!-- Aqui são passados as props e métodos -->
     <div v-show="errorMessage" class="error alert alert-danger">{{errorMessage}}</div>
 
@@ -9,24 +9,27 @@
     <div v-show = "!isLoading.list">
 
       <!-- () =>: É uma Arrow function, não tem escopo, acessa todas as variáveis globais (que não estão no export Default) dessa instância do vue -->
-      <button @click="() => mostraFormulario = !mostraFormulario" class="btn btn-primary"> Mostrar formulário</button>
+      <!-- o @click não vai funcionar no componente, pq ele não tem esse envento, por isso usa o .native, que indica que deve escutar o envento nativo do button -->
+      <ac-button type="primary" @click.native="() => mostraFormulario = !mostraFormulario"> Mostrar formulário</ac-button>
       <!-- ":": É um bind, serve para passar o valor de uma variável para um atributo (lá no outro arquivo o atributo vira uma prop, o outro arquivo recebe um atributo e transforma em uma prop)
       @: É um evento, está esperando o evento ocorrer para chamar algo
       -->
       <div v-show = "isLoading.form">Carregando Formulário (salvando)...</div>
       <div v-show = "!isLoading.form">
-        <FormLigacao
-        v-if="mostraFormulario"
-        :ligacao="ligacao"
-        :ligacoes="ligacoes"
-        :error-message="errorMessage"
-        @setar-lista="setarListar"
-        @inserir-lista="inserirLista"
-        @atualizar-lista="atualizarLista"
-        @fechar="resetarFormulario"
-        />
+        <transition name="fade">
+          <FormLigacao
+          v-if="mostraFormulario"
+          :ligacao="ligacao"
+          :ligacoes="ligacoes"
+          :error-message="errorMessage"
+          @setar-lista="setarListar"
+          @inserir-lista="inserirLista"
+          @atualizar-lista="atualizarLista"
+          @fechar="resetarFormulario"
+          />
+        </transition>
       </div>
-
+      <br/>
       <!-- :ligacoes: o bid passa o valor da prop pro componente (que está esperando lá no componente) -->
       <!-- Pode pasar os parâmetros no método excluir, mas tem que ter as variáveis neste contexto,
       ou pode apenas referenciar o método e ele irá receber todos os parâmetros que tiver -->
@@ -232,5 +235,11 @@ export default {
   .error{
     color:tomato;
     border-color: red;
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 </style>

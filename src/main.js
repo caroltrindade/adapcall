@@ -8,6 +8,10 @@ import '@fortawesome/fontawesome-free/js/all.min';
 
 import App from './App.vue';
 import router from './router';
+import importComponent from './plugin/importComponent';
+
+// O importComponent é uma biblioteca praticamente, portanto, toda bilbionteca precisa ser utilizada (Vue.use)
+Vue.use(importComponent);
 
 // A global axios fica disponível no contexto global da window, do navegador
 global.axios = axios;

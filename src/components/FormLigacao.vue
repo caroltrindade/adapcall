@@ -3,42 +3,50 @@
     <!-- .prevent: é um modificador que previne que vá até o servidor e atualize a página (para que ela não seja recarregada todo submit) -->
     <!-- Interpolação: {{}}}, oega tudo qo que tem na variável e exibe -->
     <!-- @: É para escutar um emit do pai -->
-    <form @submit.prevent="salvarLigacao()">
-      <div style="text-align: right">
-        <button @click.prevent="fechar" class="btn btn-primary">Fechar</button>
+    <form @submit.prevent="salvarLigacao()" class="m-2">
+      <div style="text-align: right" size="100%">
+        <ac-button type="primary" @click.native.prevent="fechar">Fechar</ac-button>
       </div>
-      {{formLigacao}}
+      <!-- Para exibir o objeto da ligação: {{formLigacao}} -->
       <div v-if="editando"></div>
       <!-- :class="{'error': errorMessage}": vai acionar a classe error se o errorMessage tiver algo -->
-      <fieldset :class="{'error': errorMessage}">
+      <fieldset :class="{'error': errorMessage}" class="form-group">
         <legend :class="{'error': errorMessage}">
           {{ editando ? `Você está editando a ligação ${ formLigacao.id }` : "Criar ligação"}}
           </legend>
 
         <!-- A mensagem fica no Home <div v-show="errorMessage" class="error">{{errorMessage}}</div> -->
-
-        <div>
-          Solicitante
-          <input type="text" v-model="formLigacao.solicitante" required />
-          <!-- v-model: vincula o objeto (ou a propriedade do objeto) ao input -->
-        </div>
-        <div>
-          Solicitado
-          <input type="text" v-model="formLigacao.solicitado" required />
-        </div>
-        <div>
-          Urgente
-          <input type="checkbox" v-model="formLigacao.urgente" />
+        <div class="form-row align-items-center">
+          <div class="col">
+            <label>
+              Solicitante
+              <input type="text" class="form-control" size="100%" v-model="formLigacao.solicitante" required />
+              <!-- v-model: vincula o objeto (ou a propriedade do objeto) ao input -->
+            </label>
+          </div>
+          <div class="col m-2">
+            <label>
+              Solicitado
+              <input type="text" class="form-control" size="100%" v-model="formLigacao.solicitado" required />
+            </label>
+          </div>
+          <div class="col m-2">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="customCheck" v-model="formLigacao.urgente" />
+              <label class="custom-control-label" for="customCheck">Urgente</label>
+            </div>
+          </div>
         </div>
         <!-- <button v-show="editando" type="submit">Salvar alterações</button> -->
         <!-- <button v-show="!editando" type="submit">Criar ligação</button> -->
         <!-- Pode fazer da maneira acima ou abaixo: -->
         <!-- Ternário (? :): um if abreviado -->
-        <button type="submit" class="btn btn-primary">{{ editando ? "Salvar alterações" : "Criar ligação"}}</button>
+        <br/>
+        <ac-button type="submit" class="btn btn-primary">{{ editando ? "Salvar alterações" : "Criar ligação"}}</ac-button>
         &nbsp;
-        <button type="button" @click="apagarLista" class="btn btn-primary">Apagar lista</button>
+        <ac-button type="primary" @click.native="apagarLista" class="btn btn-primary">Apagar lista</ac-button>
         &nbsp;
-        <button type="button" @click="cancelar" class="btn btn-primary">Cancelar</button>
+        <ac-button type="primary" @click.native="cancelar" class="btn btn-primary">Cancelar</ac-button>
       </fieldset>
     </form>
   </div>
@@ -75,6 +83,18 @@ export default {
       this.formLigacao = { ...this.novaLigacao };
     }
   },
+  /* computed: São variáveis que são uma função, não é um método (nã da pra executar) e não é uam variável simples
+  // Essas variáveis não são chamadas em nenhum lugar, a não ser que é alterado o valor da variável/função
+  computed: {
+    getIcon() {
+      console.log('computed');
+      if (this.editando) return 'fa-trash';
+      if (this.formligacao.urgente) return 'fa-cross';
+
+      return 'fa plus';
+    },
+  },
+  */
   // ...novaLigacao: cria um clone do objeto
   methods: {
     salvarLigacao() {
