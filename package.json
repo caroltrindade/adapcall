@@ -1,31 +1,27 @@
 {
   "name": "adapcall",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "doc": " echo coloca no script a instalação das bibliotecas e dependências, para quando executar o projeto executar automaticamente",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-all": "cd app && npm i && cd ../services/adapcallapi && npm i && npx sls dynamodb install",
+    "app": "cd app && npm run serve",
+    "api": "cd services/adapcallapi && npx sls offline start",
+    "all": "npm-run-all -l -p app api"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caroltrindade/adapcall.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caroltrindade/adapcall/issues"
+  },
+  "homepage": "https://github.com/caroltrindade/adapcall#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.12.1",
-    "axios": "^0.19.2",
-    "bootstrap": "^4.4.1",
-    "core-js": "^3.4.4",
-    "jquery": "^3.4.1",
-    "popper.js": "^1.16.1",
-    "vue": "^2.6.10",
-    "vue-router": "^3.1.3"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-plugin-eslint": "^4.1.2",
-    "@vue/cli-plugin-router": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
-    "@vue/eslint-config-airbnb": "^4.0.0",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "npm-run-all": "^4.1.5"
   }
 }
