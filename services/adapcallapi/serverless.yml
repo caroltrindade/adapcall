@@ -26,6 +26,9 @@ provider:
   runtime: nodejs12.x
   region: sa-east-1
   stage: dev
+  environment:
+    region: sa-east-1
+    #  criou uma variável de ambiente, region
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -71,10 +74,17 @@ functions:
           # define a rota hello-world
           path: hello-world
           method: get
+  listLigacoes:
+    handler: src/v1/ligacoes/list.run
+    events:
+      - http:
+          # define a rota hello-world
+          path: v1/ligacoes
+          method: get
 
 # Define configurações do Dynamo
 resources:
-  Resource:
+  Resources:
     # Cria uma tabela
     tableLigacoes:
       Type: 'AWS::DynamoDB::Table'
@@ -82,12 +92,12 @@ resources:
         # Define o nome da tabela
         TableName: Ligacoes
         AttributeDefinitions:
-          AttributeName: id
-          # Tipo: String, mesmo que seja um número, é bom deixar string pois posteriormente pode precisar concatenar com mais alguma informação
-          AttributeType: S
+          - AttributeName: id
+            # Tipo: String, mesmo que seja um número, é bom deixar string pois posteriormente pode precisar concatenar com mais alguma informação
+            AttributeType: S
         KeySchema:
-          AttributeName: id
-          KeyType: HASH
+          - AttributeName: id
+            KeyType: HASH
           # AttributeName: id
           # KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
@@ -111,10 +121,10 @@ custom:
       seed: true
       # convertEmptyValues: converter valores em branco no json para um valor aceitável pelo dynamo, pois o dynamo não deixa colocar uma prop no json em branco, ex: "nome": ""
       convertEmptyValues: true
-      seed:
-        domain:
-          sources:
-            -table: Ligacoes
+    seed:
+      domain:
+        sources:
+          - table: Ligacoes
             sources: [./data/Ligacoes-inicial.json]
     # Uncomment only if you already have a DynamoDB running locally
     # noStart: true
